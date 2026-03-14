@@ -1,5 +1,7 @@
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import React from "react";
 import { Link } from "react-router";
+import { auth } from "../firebase/firebase.init";
 
 
 function Register() {
@@ -10,7 +12,21 @@ function Register() {
         const email = e.target.email.value;
         const password = e.target.password.value;
 
-        console.log(name,email, password);
+      console.log(name, email, password);
+      
+      createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+
+      
+        const user = userCredential.user;
+        sendEmailVerification(auth.currentUser).then(() => {
+          alert('Email verification sent')
+        })
+        console.log(user);
+      }).catch((error) => {
+      console.log(error);
+    })
+    
+      
     }
 
 
